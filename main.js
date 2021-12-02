@@ -1,4 +1,5 @@
 song = "";
+song2 = "";
 scoreRightWrist = 0;
 scoreLeftWrist = 0;
 rightWristX = 0;
@@ -7,7 +8,8 @@ rightWristY = 0;
 leftWristX = 0;
 
 function preload(){
-    song = loadSound("music.mp3");
+    song = loadSound("Pang Pang.mp3");
+    song2 = loadSound("harry  potter 1 theme song.mp3");
 }
 
 function setup(){
@@ -24,9 +26,40 @@ function setup(){
 function draw(){
     image(video, 0, 0, 600, 500);
 
+    song1_status = song.isPlaying();
+    song2_status = song2.isPlaying();
+
     fill("#FF0000");
     stroke("#FF0000");
 
+    if(scoreLeftWrist > 0.2)
+    {
+        circle(leftWristX, leftWristY, 20);
+        song2.stop();
+
+        if(song1_status == false)
+        {
+            song.play();
+           
+        
+            document.getElementById("song").innerHTML = "Playing - Pam Pan Theme Song";
+        }
+        
+    }
+    if(scoreRightWrist > 0.2)
+    {
+        circle(rightWristX,rightWristY,20);
+        song.stop();
+
+        if(song2_status == false)
+        {
+            song2.play();
+            document.getElementById("song").innerHTML = "Playing - Harry Potter Theme Song";
+        
+        }
+       
+        
+    }
 }
 
 function play(){
@@ -42,7 +75,11 @@ function modelLoaded(){
 function gotPoses(results){
     if(results.length > 0){
         console.log(results);
-    
+        
+        scoreRightWrist = results[0].pose.keypoints[10].score;
+        scoreLeftWrist = results[0].pose.keypoints[9].score;
+        console.log("scoreRightWrist = " +scoreRightWrist + " scoreLeftWrist = " +scoreLeftWrist);
+        
         rightWristX = results[0].pose.rightWrist.x;
         rightWristY = results[0].pose.rightWrist.y;
         console.log("rightWristX = " + rightWristX + " rightWristY = " + rightWristY);
